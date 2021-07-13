@@ -1,0 +1,22 @@
+loop:
+TextWindow.Write("# ")
+
+cmd = TextWindow.Read()
+If cmd = "exit" Then
+  Program.End()
+EndIf
+
+EV3.SystemCall(Text.Append(cmd, " > /home/root/lms2012/prjs/output 2>&1"))
+handle = EV3File.OpenRead("output")
+
+output:
+line = EV3File.ReadLine(handle)
+
+If line = "" Then
+  EV3File.Close(handle)
+  Goto loop
+EndIf
+
+TextWindow.WriteLine(line)
+
+Goto output
